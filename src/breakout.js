@@ -1,6 +1,9 @@
 console.log("loaded breakout.js");
 
 import * as d from "./lib/drawing.js";
+import * as c from "./lib/collision/collision.js";
+
+const collision = await c.loadCollisionWasm();
 
 const canvas = /** @type {HTMLCanvasElement} */
     (document.getElementById("canvas"));
@@ -8,7 +11,19 @@ const canvas = /** @type {HTMLCanvasElement} */
 const ctx = /** @type {CanvasRenderingContext2D} */
     (canvas.getContext("2d"));
 
-const canvasRect = d.createRectangle(0, 0, canvas.width, canvas.height);
+let canvasRect = d.createRectangle(0, 0, canvas.width, canvas.height);
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    clearRect(canvasRect);
+    canvasRect = d.createRectangle(0, 0, canvas.width, canvas.height);
+    console.log(canvas.width + ", " + canvas.height);
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+window.addEventListener("orientationchange", resizeCanvas);
 
 let paddle = d.createRectangle(50, 700, 100, 25);
 fillRect(paddle);
@@ -16,7 +31,7 @@ fillRect(paddle);
 const paddleSpeed = 10;
 const canvasPadding = 15;
 
-let ball = d.createCircle(100, 100, 10);
+let ball = d.createCircle(100, 10, 10);
 let dx = 2;
 let dy = -2;
 
