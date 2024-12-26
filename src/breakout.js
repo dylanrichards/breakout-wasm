@@ -157,11 +157,24 @@ function registerKeyEvent() {
     });
 }
 
-function registerMouseMove() {
-    document.addEventListener("mousemove", (event) => {
-        if (event.clientX + paddle.w <= canvas.width)
-            paddle.x = event.clientX;
-    });
+/**
+ * @param {MouseEvent} event
+ */
+function updateMousePos(event) {
+    if (event.clientX + paddle.w <= canvas.width)
+        paddle.x = event.clientX;
 }
+
+/**
+ * @param {TouchEvent} event
+ */
+function updateTouchPos(event) {
+    const touch = event.touches[0];
+    if (touch.clientX + paddle.w <= canvas.width)
+        paddle.x = touch.clientX;
+}
+
 registerKeyEvent();
-registerMouseMove();
+document.addEventListener("mousemove", updateMousePos);
+document.addEventListener('touchstart', updateTouchPos);
+document.addEventListener('touchmove', updateTouchPos);
