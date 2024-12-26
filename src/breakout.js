@@ -39,23 +39,21 @@ function animate(){
     d.drawCircle(ctx, ball);
     d.drawRect(ctx, paddle);
 
-    if (ball.x + dx > canvas.width - ball.radius || ball.x + dx < ball.radius)
+    if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width)
     {
         dx = -dx;
     }
 
-    if (ball.y + dy > canvas.height - ball.radius || ball.y + dy < ball.radius)
+    if (ball.y - ball.radius < 0 || ball.y > canvas.height - ball.radius)
     {
         dy = -dy;
     }
 
     // paddle collision - change dx if it's on one half of the x paddle vs the other half
-    if (ball.x + dx >= paddle.x - ball.radius && ball.x + dx <= paddle.x + paddle.w - ball.radius)
+    if (hasCollided(ball, paddle))
     {
-        if (ball.y + dy >= paddle.y - ball.radius && ball.y + dy <= paddle.y + paddle.h - ball.radius)
-            dy = -dy;
+        dy = -dy;
     }
-
 
     ball.x += dx;
     ball.y += dy;
@@ -63,6 +61,19 @@ function animate(){
     window.requestAnimationFrame(animate);
 }
 window.requestAnimationFrame(animate);
+
+/**
+ * @param {d.Circle} circle
+ * @param {d.Rectangle} rect
+ */
+function hasCollided(circle, rect) {
+    if (circle.x + circle.radius >= rect.x && circle.x - circle.radius <= rect.x + rect.w)
+    {
+        if (circle.y + circle.radius >= rect.y && circle.y - circle.radius <= rect.y + rect.h)
+            return true;
+    }
+    return false;
+}
 
 function onArrowRight() {
     if (paddle.x + paddle.w <= canvas.width)
