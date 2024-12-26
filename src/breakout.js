@@ -31,8 +31,8 @@ d.drawRect(ctx, paddle);
 const paddleSpeed = 10;
 
 let ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
-let dx = 2;
-let dy = 2;
+let dx = 3;
+let dy = 3;
 
 /**
  * @param {number} layers
@@ -59,7 +59,7 @@ function createBricks(layers, bpl) {
     return ret;
 }
 
-let bricks = createBricks(3, 15);
+let bricks = createBricks(2, 10);
 
 function animate(){
     d.clearRect(ctx, canvasRect);
@@ -157,24 +157,12 @@ function registerKeyEvent() {
     });
 }
 
-/**
- * @param {MouseEvent} event
- */
-function updateMousePos(event) {
-    if (event.clientX + paddle.w <= canvas.width)
-        paddle.x = event.clientX;
-}
-
-/**
- * @param {TouchEvent} event
- */
-function updateTouchPos(event) {
-    const touch = event.touches[0];
-    if (touch.clientX + paddle.w <= canvas.width)
-        paddle.x = touch.clientX;
+function registerPointerEvent() {
+    document.addEventListener('pointermove', (event) => {
+        if (event.clientX + paddle.w <= canvas.width)
+            paddle.x = event.clientX;
+    });
 }
 
 registerKeyEvent();
-document.addEventListener("mousemove", updateMousePos);
-document.addEventListener('touchstart', updateTouchPos);
-document.addEventListener('touchmove', updateTouchPos);
+registerPointerEvent();
