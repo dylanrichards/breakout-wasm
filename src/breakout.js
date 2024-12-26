@@ -31,8 +31,8 @@ d.drawRect(ctx, paddle);
 const paddleSpeed = 10;
 
 let ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
-let dx = 2;
-let dy = 2;
+let dx = 3;
+let dy = 3;
 
 /**
  * @param {number} layers
@@ -59,7 +59,7 @@ function createBricks(layers, bpl) {
     return ret;
 }
 
-let bricks = createBricks(3, 15);
+let bricks = createBricks(2, 10);
 
 function animate(){
     d.clearRect(ctx, canvasRect);
