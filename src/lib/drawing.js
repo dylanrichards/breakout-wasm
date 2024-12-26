@@ -22,6 +22,19 @@ export function createCircle(x, y, r)
     }
 }
 
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param c {Circle}
+ */
+export function drawCircle(ctx, c)
+{
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.radius, 0, 2 * Math.PI)
+    ctx.fill();
+    ctx.closePath();
+}
+
+
 /** @typedef Rectangle
  * @type {object}
  * @property x {number}
@@ -46,3 +59,23 @@ export function createRectangle(x, y, w, h)
         h: h,
     }
 }
+
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param r {Rectangle}
+ */
+export function drawRect(ctx, r)
+{
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param r {Rectangle}
+ */
+export function clearRect(ctx, r)
+{
+    ctx.clearRect(r.x, r.y, r.w, r.h);
+}
+

@@ -16,9 +16,9 @@ let canvasRect = d.createRectangle(0, 0, canvas.width, canvas.height);
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    clearRect(canvasRect);
+    d.clearRect(ctx, canvasRect);
     canvasRect = d.createRectangle(0, 0, canvas.width, canvas.height);
-    console.log(canvas.width + ", " + canvas.height);
+    console.debug("Canvas size: " + canvas.width + ", " + canvas.height);
 }
 
 resizeCanvas();
@@ -26,20 +26,18 @@ window.addEventListener("resize", resizeCanvas);
 window.addEventListener("orientationchange", resizeCanvas);
 
 let paddle = d.createRectangle(50, 700, 100, 25);
-fillRect(paddle);
+d.drawRect(ctx, paddle);
 
 const paddleSpeed = 10;
-const canvasPadding = 15;
 
 let ball = d.createCircle(100, 10, 10);
 let dx = 2;
 let dy = -2;
 
 function animate(){
-    clearRect(canvasRect);
-
-    drawCircle(ball);
-    fillRect(paddle);
+    d.clearRect(ctx, canvasRect);
+    d.drawCircle(ctx, ball);
+    d.drawRect(ctx, paddle);
 
     if (ball.x + dx > canvas.width - ball.radius || ball.x + dx < ball.radius)
     {
@@ -66,69 +64,24 @@ function animate(){
 }
 window.requestAnimationFrame(animate);
 
-/**
- * @param c {d.Circle}
- */
-function drawCircle(c)
-{
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, c.radius, 0, 2 * Math.PI)
-    ctx.fill();
-    ctx.closePath();
-}
-
-
-/**
- * @param r {d.Rectangle}
- */
-function fillRect(r)
-{
-    ctx.fillRect(r.x, r.y, r.w, r.h);
-}
-
-/**
- * @param r {d.Rectangle}
- */
-function clearRect(r)
-{
-    ctx.clearRect(r.x, r.y, r.w, r.h);
-}
-
-
 function onArrowRight() {
-    if (paddle.x + paddle.w <= canvas.width - canvasPadding)
-    {
-        clearRect(paddle);
+    if (paddle.x + paddle.w <= canvas.width)
         paddle.x += paddleSpeed;
-        fillRect(paddle);
-    }
 }
 
 function onArrowLeft() {
-    if (paddle.x > canvasPadding)
-    {
-        clearRect(paddle);
+    if (paddle.x > 0)
         paddle.x -= paddleSpeed;
-        fillRect(paddle);
-    }
 }
 
 function onArrowUp() {
-    if (paddle.y > canvasPadding)
-    {
-        clearRect(paddle);
+    if (paddle.y > 0)
         paddle.y -= paddleSpeed;
-        fillRect(paddle);
-    }
 }
 
 function onArrowDown() {
-    if (paddle.y + paddle.h <= canvas.height - canvasPadding)
-    {
-        clearRect(paddle);
+    if (paddle.y + paddle.h <= canvas.height)
         paddle.y += paddleSpeed;
-        fillRect(paddle);
-    }
 }
 
 function registerKeyEvent() {
@@ -148,11 +101,7 @@ function registerKeyEvent() {
 function registerMouseMove() {
     document.addEventListener("mousemove", (event) => {
         if (event.clientX + paddle.w <= canvas.width)
-        {
-            clearRect(paddle);
             paddle.x = event.clientX;
-            fillRect(paddle);
-        }
     });
 }
 registerKeyEvent();
