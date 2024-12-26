@@ -25,28 +25,76 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("orientationchange", resizeCanvas);
 
-let paddle = d.createRectangle(50, 700, 100, 25);
+let paddle = d.createRectangle(canvas.width / 2, canvas.height * 4 / 5, 100, 25);
 d.drawRect(ctx, paddle);
 
 const paddleSpeed = 10;
 
-let ball = d.createCircle(100, 10, 10);
+let ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
 let dx = 2;
-let dy = -2;
+let dy = 2;
+
+/**
+ * @param {number} layers
+ * @param {number} bpl bricks per layer
+ * @returns {d.Rectangle[]} bricks
+ */
+function createBricks(layers, bpl) {
+    const ret = [];
+    const xpad = 5;
+    const ypad = 5;
+
+    const h = 20;
+    const w = (canvas.width / bpl) - 5;
+    let x = 0;
+    let y = 10;
+    for (let i = 0; i < layers; i++) {
+        for (let j = 0; j < bpl; j++) {
+            ret.push(d.createRectangle(x, y, w, h));
+            x += w + xpad;
+        }
+        x = 0;
+        y += h + ypad;
+    }
+    return ret;
+}
+
+let bricks = createBricks(3, 15);
 
 function animate(){
     d.clearRect(ctx, canvasRect);
     d.drawCircle(ctx, ball);
     d.drawRect(ctx, paddle);
+    bricks.forEach(b => d.drawRect(ctx, b));
 
     if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width)
     {
         dx = -dx;
     }
 
-    if (ball.y - ball.radius < 0 || ball.y > canvas.height - ball.radius)
+    if (ball.y - ball.radius < 0)
     {
         dy = -dy;
+    }
+
+    if (ball.y > canvas.height - ball.radius)
+    {
+        alert("YOU LOST");
+        return;
+    }
+
+    //bricks = bricks.filter((b) => !hasCollided(ball, b));
+    for (let i = 0; i < bricks.length; i++) {
+        if (hasCollided(ball, bricks[i])) {
+            bricks.splice(i, 1);
+            dy = -dy;
+            break;
+        }
+    }
+
+    if (bricks.length == 0) {
+        alert("YOU WIN!");
+        return;
     }
 
     // paddle collision - change dx if it's on one half of the x paddle vs the other half
