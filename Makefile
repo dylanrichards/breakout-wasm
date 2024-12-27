@@ -1,6 +1,7 @@
 # https://www.gnu.org/software/make/manual/html_node/Implicit-Variables.html
 CC		= clang
-CFLAGS	= --target=wasm32 --no-standard-libraries -Wl,--export-all -Wl,--no-entry
+CFLAGS	= --target=wasm32 -O3
+LDFLAGS	= -nostdlib -Wl,--export-all -Wl,--no-entry
 
 SRC_DIR = ./src/lib/collision
 OUT_DIR = ./src/lib/collision
@@ -12,7 +13,7 @@ build: $(TARGETS)
 # https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
 $(OUT_DIR)/%.wasm: $(SRC_DIR)/%.c
 	@mkdir -p $(OUT_DIR)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
 .PHONY: run
 run:
