@@ -5,6 +5,8 @@ import * as c from "./lib/collision/collision.js";
 
 const collision = await c.loadCollisionWasm();
 
+console.info(collision.add(3, 19));
+
 const canvas = /** @type {HTMLCanvasElement} */
     (document.getElementById("canvas"));
 

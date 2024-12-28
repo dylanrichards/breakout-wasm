@@ -1,7 +1,9 @@
 # https://www.gnu.org/software/make/manual/html_node/Implicit-Variables.html
 CC		= clang
-CFLAGS	= --target=wasm32 -O3
-LDFLAGS	= -nostdlib -Wl,--export-all -Wl,--no-entry
+CFLAGS	= --target=wasm32 -O2 -Wall -Wextra -Werror -pedantic -std=c89
+
+# https://lld.llvm.org/WebAssembly.html
+LDFLAGS	= -nostdlib -Wl,--no-entry -Wl,--import-undefined -Wl,--export=add
 
 SRC_DIR = ./src/lib/collision
 OUT_DIR = ./src/lib/collision
