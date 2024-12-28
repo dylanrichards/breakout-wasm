@@ -34,7 +34,7 @@ const paddleSpeed = 10;
 
 let ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
 let dx = 3;
-let dy = 4;
+let dy = -4;
 
 /**
  * @param {number} layers
