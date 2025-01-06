@@ -88,6 +88,7 @@ function animate(){
     //bricks = bricks.filter((b) => !hasCollided(ball, b));
     for (let i = 0; i < bricks.length; i++) {
         if (hasCollided(ball, bricks[i])) {
+            // remove brick
             bricks.splice(i, 1);
             dy = -dy;
             break;
@@ -99,9 +100,10 @@ function animate(){
         return;
     }
 
-    // paddle collision - change dx if it's on one half of the x paddle vs the other half
+    // paddle collision
     if (hasCollided(ball, paddle))
     {
+        dx = calcDx(ball, paddle);
         dy = -dy;
     }
 
@@ -111,6 +113,19 @@ function animate(){
     window.requestAnimationFrame(animate);
 }
 window.requestAnimationFrame(animate);
+
+/**
+ * Calc dx
+ * @param {d.Circle} circle
+ * @param {d.Rectangle} rect
+ * @returns {number}
+ */
+function calcDx(circle, rect) {
+    const halfW = rect.w / 2;
+    // close enough to the rang -1 to 1 where 0 is the midpoint
+    const scale = (circle.x - rect.x - halfW)/halfW;
+    return scale * 3;
+}
 
 /**
  * @param {d.Circle} circle

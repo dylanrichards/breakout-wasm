@@ -10,6 +10,7 @@ OUT_DIR = ./src/lib/collision
 
 TARGETS = $(OUT_DIR)/collision.wasm
 
+.PHONY: build
 build: $(TARGETS)
 
 # https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
