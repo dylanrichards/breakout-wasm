@@ -32,9 +32,24 @@ d.drawRect(ctx, paddle);
 
 const paddleSpeed = 10;
 
-let ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
-let dx = 3;
-let dy = -4;
+/** @type {number} */
+let dx;
+/** @type {number} */
+let dy;
+/** @type {d.Circle} */
+let ball;
+/** @type {d.Rectangle[]} */
+let bricks;
+
+function initGame() {
+    ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
+    bricks = createBricks(2, 10);
+    dx = 3;
+    dy = -5;
+}
+
+initGame();
+window.requestAnimationFrame(animate);
 
 /**
  * @param {number} layers
@@ -61,8 +76,6 @@ function createBricks(layers, bpl) {
     return ret;
 }
 
-let bricks = createBricks(2, 10);
-
 function animate(){
     d.clearRect(ctx, canvasRect);
     d.drawCircle(ctx, ball);
@@ -82,13 +95,12 @@ function animate(){
     if (ball.y > canvas.height - ball.radius)
     {
         alert("YOU LOST");
-        return;
+        initGame();
     }
 
     //bricks = bricks.filter((b) => !hasCollided(ball, b));
     for (let i = 0; i < bricks.length; i++) {
         if (hasCollided(ball, bricks[i])) {
-            // remove brick
             bricks.splice(i, 1);
             dy = -dy;
             break;
@@ -97,7 +109,7 @@ function animate(){
 
     if (bricks.length == 0) {
         alert("YOU WIN!");
-        return;
+        initGame();
     }
 
     // paddle collision
@@ -112,7 +124,6 @@ function animate(){
 
     window.requestAnimationFrame(animate);
 }
-window.requestAnimationFrame(animate);
 
 /**
  * Calc dx
