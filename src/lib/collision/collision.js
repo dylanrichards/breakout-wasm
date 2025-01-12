@@ -20,9 +20,16 @@ function getStr(memory, offset, length) {
  * @returns {WebAssembly.Imports} imports
  */
 function getImportObject() {
+    /** @type {WebAssembly.Memory} */
+    // @ts-expect-error
+    const mem = wasm.exports.memory;
     return {
         "env": {
-            "console": (ptr, len) => { console.info(getStr(wasm.exports.memory, ptr, len)); }
+            /**
+             * @param {number} ptr - ptr from c where the string starts
+             * @param {number} len - length of the string from c
+             */
+            "console": (ptr, len) => { console.info(getStr(mem, ptr, len)); }
         }
     };
 }

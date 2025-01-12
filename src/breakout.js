@@ -43,7 +43,7 @@ let bricks;
 
 function initGame() {
     ball = d.createCircle(canvas.width / 2, canvas.height / 3, 10);
-    bricks = createBricks(2, 10);
+    bricks = createBricks(5, 15);
     dx = 3;
     dy = -5;
 }
